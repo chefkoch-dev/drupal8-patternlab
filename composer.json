@@ -1,12 +1,10 @@
 {
     "name": "chefkoch/patternlab",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "ssh://git@jira.chefkoch.de:7999/~olav.schettler/drupal8-patternlab.git"
-        }
-    ],
+    "type": "drupal-module",
     "require": {
         "mustache/mustache": "^2.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
     }
 }

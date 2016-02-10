@@ -1,0 +1,5 @@
+services:
+    patternlab.twig.MustacheExtension:
+        class: Drupal\patternlab\Twig\MustacheExtension
+        tags:
+            - { name: twig.extension }
