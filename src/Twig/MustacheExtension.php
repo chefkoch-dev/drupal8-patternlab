@@ -1,5 +1,6 @@
 <?php
-namespace Chefkoch\Twig;
+
+namespace Drupal\patternlab\Twig;
 
 class MustacheExtension extends \Twig_Extension
 {
