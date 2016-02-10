@@ -1,0 +1,6 @@
+type: module
+name: Chefkoch Patternlab Adapter
+description: 'Integrates Mustache templates in a possibly remote Patternlab instance into Twig templates'
+package: Chefkoch
+core: 8.x
+configure: chefkoch.patternlab
