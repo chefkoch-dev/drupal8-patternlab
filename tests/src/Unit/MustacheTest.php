@@ -10,6 +10,8 @@
 namespace Drupal\tests\patternlab\Unit;
 
 use Drupal\Tests\UnitTestCase;
+use Drupal\Core\Test\TestRunnerKernel;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Tests that we can integrate Mustache templates from a remote Patternlab instance.
@@ -18,17 +20,25 @@ use Drupal\Tests\UnitTestCase;
  */
 class MustacheTest extends UnitTestCase
 {
-
     /**
      * Tests Mustache integration.
      */
     public function testMustacheIntegration()
     {
+        $drupalRoot = __DIR__ . '/../../../../../..';
+
+        require_once $drupalRoot . '/core/includes/module.inc';
+        $autoloader = require $drupalRoot . '/autoload.php';
+
+        $request = Request::create('/');
+        $kernel = TestRunnerKernel::createFromRequest($request, $autoloader);
+        $kernel->setSitePath('sites/default');
+        $kernel->boot();
+
         /** @var \Drupal\Core\Template\TwigEnvironment $twig */
         $twig = \Drupal::service('twig');
 
-        $this->assertEquals('Hallo Olav!',
-            $twig->render('{{ component("hello", {name: "Olav"}) }}')
-        );
+        $rendered = $twig->render('{{ component("hello", {name: "Olav"}) }}');
+        $this->assertEquals('Hallo Olav!', $rendered);
     }
 }
