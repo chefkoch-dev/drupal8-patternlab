@@ -1,3 +1,4 @@
 chefkoch:
     patternlab:
-        base_url: 'http://patternlab.test.chefkoch.de'
+        base_url: 'http://living-styleguide.vm.lst.pm/source/_patterns'
+        cache_dir: 'sites/default/files/mustache'
