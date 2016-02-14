@@ -10,7 +10,7 @@ class MustacheExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('component',
-                function ($templatePath, $arguments)
+                function ($templatePath, $arguments = [])
                 {
                     $config = \Drupal::config('chefkoch.patternlab');
                     $templateBaseUrl = $config->get('base_url');
