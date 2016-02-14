@@ -10,8 +10,10 @@
 namespace Drupal\tests\patternlab\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\Core\Test\TestRunnerKernel;
-use Symfony\Component\HttpFoundation\Request;
+use Drupal\patternlab\Twig\MustacheExtension;
+use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Config\ConfigFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Tests that we can integrate Mustache templates from a remote Patternlab instance.
@@ -21,24 +23,52 @@ use Symfony\Component\HttpFoundation\Request;
 class MustacheTest extends UnitTestCase
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $config = $this->getMockBuilder(ImmutableConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $config->expects($this->any())
+            ->method('get')
+            ->will($this->returnValueMap([
+                ['base_url', __DIR__ . '/../../mustache'],
+                ['cache_dir', __DIR__ . '/../../cache']
+            ]));
+
+        $configFactory = $this->getMockBuilder(ConfigFactory::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configFactory->expects($this->any())
+            ->method('get')
+            ->with('chefkoch.patternlab')
+            ->willReturn($config);
+
+        $container = new ContainerBuilder();
+        $container->set('config.factory', $configFactory);
+
+        \Drupal::setContainer($container);
+    }
+
+    /**
      * Tests Mustache integration.
+     * @see core/tests/Drupal/Tests/Core/Template/TwigExtensionTest.php
      */
     public function testMustacheIntegration()
     {
-        $drupalRoot = __DIR__ . '/../../../../../..';
+        $extension = new MustacheExtension();
 
-        require_once $drupalRoot . '/core/includes/module.inc';
-        $autoloader = require $drupalRoot . '/autoload.php';
+        $loader = new \Twig_Loader_String();
+        $twig = new \Twig_Environment($loader);
+        $twig->addExtension($extension);
 
-        $request = Request::create('/');
-        $kernel = TestRunnerKernel::createFromRequest($request, $autoloader);
-        $kernel->setSitePath('sites/default');
-        $kernel->boot();
-
-        /** @var \Drupal\Core\Template\TwigEnvironment $twig */
-        $twig = \Drupal::service('twig');
-
-        $rendered = $twig->render('{{ component("hello", {name: "Olav"}) }}');
-        $this->assertEquals('Hallo Olav!', $rendered);
+        $result = $twig->render('{{ component("hello", {name: "Olav"}) }}');
+        $this->assertEquals('Hallo Olav!', $result);
     }
+
 }

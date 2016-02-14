@@ -12,11 +12,12 @@ class MustacheExtension extends \Twig_Extension
             new \Twig_SimpleFunction('component',
                 function ($templatePath, $arguments)
                 {
-                    //$templateBaseUrl = \Drupal::config('chefkoch.patternlab')->get('base_url');
-                    $templateBaseUrl = __DIR__ . '/../../mustache';
+                    $config = \Drupal::config('chefkoch.patternlab');
+                    $templateBaseUrl = $config->get('base_url');
+                    $mustacheCacheDir = $config->get('cache_dir');
 
                     $mustache = new \Mustache_Engine([
-                        'cache' => DRUPAL_ROOT . '/sites/default/files/mustache',
+                        'cache' => $mustacheCacheDir,
                         'loader' => new Mustache_Loader_FilesystemLoader($templateBaseUrl),
                     ]);
 
