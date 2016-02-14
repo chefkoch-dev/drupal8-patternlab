@@ -17,6 +17,7 @@ class MustacheExtension extends \Twig_Extension
                     $mustacheCacheDir = $config->get('cache_dir');
 
                     $mustache = new \Mustache_Engine([
+                        'pragmas' => [\Mustache_Engine::PRAGMA_BLOCKS],
                         'cache' => $mustacheCacheDir,
                         'loader' => new Mustache_Loader_FilesystemLoader($templateBaseUrl),
                     ]);

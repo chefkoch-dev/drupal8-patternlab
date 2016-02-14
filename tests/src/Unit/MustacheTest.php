@@ -69,6 +69,14 @@ class MustacheTest extends UnitTestCase
 
         $result = $twig->render('{{ component("hello", {name: "Olav"}) }}');
         $this->assertEquals('Hallo Olav!', $result);
-    }
 
+        $result = $twig->render('{{ component("complex", {name: "Olav"}) }}');
+        $this->assertEquals('Complex: Hallo Olav!', $result);
+
+        $result = $twig->render('{{ component("loop", {outer: [ {name: "Tralla"}, {name: "Hudli"} ]}) }}');
+        $this->assertEquals('Hallo Tralla!Hallo Hudli!', $result);
+
+        $result = $twig->render('{{ component("blocks", {name: "Olav"}) }}');
+        $this->assertEquals('myheadHallo Olav!', $result);
+    }
 }
