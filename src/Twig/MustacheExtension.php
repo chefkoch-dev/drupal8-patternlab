@@ -13,7 +13,7 @@ class MustacheExtension extends \Twig_Extension
                 function ($templatePath, $arguments)
                 {
                     //$templateBaseUrl = \Drupal::config('chefkoch.patternlab')->get('base_url');
-                    $templateBaseUrl = __DIR__ . '/../../../mustache';
+                    $templateBaseUrl = __DIR__ . '/../../mustache';
 
                     $mustache = new \Mustache_Engine([
                         'cache' => DRUPAL_ROOT . '/sites/default/files/mustache',
